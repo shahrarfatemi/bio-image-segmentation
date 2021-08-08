@@ -406,7 +406,7 @@ def evaluateModel(model, X_test, Y_test, batchSize):
         saveModel(model)
 
 model = MultiResUnet(height=192, width=256, n_channels=3)
-
+#model = loadModel()
 model.compile(optimizer='adam', loss='binary_crossentropy', metrics=[dice_coef, jacard, 'accuracy'])
 #model.summary()
 saveModel(model)

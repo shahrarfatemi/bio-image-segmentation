@@ -301,6 +301,17 @@ def saveModel(model):
     fp.close()
     model.save_weights(dirModel+'modelW.h5')
 
+def loadModel():
+  fileName = dirModel+'modelP.json'
+  fp = open(fileName,'r')
+  model_json = fp.read()
+  fp.close()
+  model = model_from_json(model_json)
+  # load weights into new model
+  model.load_weights(dirModel+'modelW.h5')
+  print("Loaded model from disk")
+  return model
+
 def dice_coef(y_true, y_pred):
     smooth = 0.0
     y_true_f = K.flatten(y_true)
@@ -388,22 +399,11 @@ def evaluateModel(model, X_test, Y_test, batchSize):
         print('***********************************************')
         print('Jacard Index improved from '+str(best)+' to '+str(jacard))
         print('***********************************************')
-        fp = open('models/best.txt','w')
+        fp = open(dirModel + 'best.txt','w')
         fp.write(str(jacard))
         fp.close()
 
         saveModel(model)
-
-def trainStep(model, X_train, Y_train, X_test, Y_test, epochs, batchSize):
-
-    
-    for epoch in range(epochs):
-        print('Epoch : {}'.format(epoch+1))
-        model.fit(x=X_train, y=Y_train, batch_size=batchSize, epochs=1, verbose=1)     
-
-        evaluateModel(model,X_test, Y_test,batchSize)
-
-    return model
 
 model = MultiResUnet(height=192, width=256, n_channels=3)
 

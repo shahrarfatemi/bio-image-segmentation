@@ -405,6 +405,19 @@ def evaluateModel(model, X_test, Y_test, batchSize):
 
         saveModel(model)
 
+def trainStep(model, X_train, Y_train, X_test, Y_test, epochs, batchSize):
+
+    
+    for epoch in range(epochs):
+        print('Epoch : {}'.format(epoch+1))
+        model.fit(x=X_train, y=Y_train, batch_size=batchSize, epochs=1, verbose=1)     
+
+        evaluateModel(model,X_test, Y_test,batchSize)
+
+    return model
+
+        
+        
 model = MultiResUnet(height=192, width=256, n_channels=3)
 #model = loadModel()
 model.compile(optimizer='adam', loss='binary_crossentropy', metrics=[dice_coef, jacard, 'accuracy'])
